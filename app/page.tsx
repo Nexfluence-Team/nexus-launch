@@ -576,16 +576,14 @@ function LumaForm() {
       <div style={{ marginTop: 24, borderRadius: 16, border: `1px solid ${C.border}`, overflow: "hidden" }}>
         <iframe
           src="https://lu.ma/embed/event/evt-guA9zHzcVg5vgdw/simple"
-          scrolling="no"
+          scrolling="auto"
           frameBorder="0"
           allow="fullscreen; payment"
           title="Apply to attend Creator Nexus"
           style={{
             display: "block",
             border: "none",
-            width: "calc(100% + 17px)",
-            marginLeft: "-8.5px",
-            marginRight: "-8.5px",
+            width: "100%",
             height: 600,
             marginBottom: -4,
           }}
