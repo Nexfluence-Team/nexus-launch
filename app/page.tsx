@@ -221,7 +221,7 @@ function HeroCardCaption({ text, small }: { text: string; small?: boolean }) {
       <div style={{
         position: "absolute", bottom: -18, left: -18,
         width: "120%", height: 130,
-        background: "radial-gradient(ellipse at 25% 80%, rgba(128,97,255,0.62) 0%, rgba(255,51,188,0.30) 42%, transparent 72%)",
+        background: "radial-gradient(ellipse at 25% 80%, rgba(20,10,40,0.55) 0%, rgba(20,10,40,0.25) 42%, transparent 72%)",
         filter: "blur(16px)", pointerEvents: "none",
       }} />
       <div style={{
