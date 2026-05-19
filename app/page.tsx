@@ -39,11 +39,9 @@ function useWindowWidth() {
 /* ─── Global CSS ─────────────────────────────────────────────────────────── */
 const GS = `
   *, *::before, *::after { box-sizing: border-box; }
-
   .ph  { max-width: calc(380px + 50vw); margin: 0 auto; padding: 28px 32px; }
   .pm  { max-width: calc(380px + 50vw); padding: 0 32px; margin: 0 auto; }
   .hw  { max-width: calc(380px + 50vw); margin: 20px auto 0; padding: 0 32px; }
-
   @media (max-width: 640px) {
     .ph { padding: 14px 16px; }
     .pm { padding: 0 14px; }
@@ -54,7 +52,6 @@ const GS = `
     .pm { padding: 0 24px; }
     .hw { padding: 0 24px; }
   }
-
   .logo-img  { width: 64px; height: 64px; }
   .logo-name { font-size: 22px; }
   .logo-tag  { font-size: 13px; }
@@ -66,11 +63,9 @@ const GS = `
   @media (min-width: 641px) and (max-width: 900px) {
     .logo-name { font-size: 19px !important; }
   }
-
   .st { font-size: 28px; }
   @media (max-width: 640px)                        { .st { font-size: 22px !important; } }
   @media (min-width: 641px) and (max-width: 900px) { .st { font-size: 25px !important; } }
-
   .sg {
     position: relative; z-index: 1;
     display: grid;
@@ -84,14 +79,13 @@ const GS = `
   @media (min-width: 641px) and (max-width: 900px) {
     .sg { grid-template-columns: 1fr 1fr; gap: 22px; max-width: 540px; margin: 0 auto; }
   }
-
   .sk { cursor: pointer; transition: transform .22s ease, box-shadow .22s ease; }
   .sk:hover {
     transform: translateY(-4px) scale(1.015);
     box-shadow: 0 12px 40px rgba(128,97,255,.35), 0 0 0 1.5px rgba(255,122,195,.55) !important;
   }
-  .sk:hover .svh { opacity: 1 !important; }
-
+  @media (min-width: 641px) { .sk .svh { opacity: 0; transition: opacity .22s ease; } }
+  @media (min-width: 641px) { .sk:hover .svh { opacity: 1 !important; } }
   .rb {
     margin-top: 24px; position: relative; border-radius: 16px;
     overflow: hidden; border: 1px solid rgba(128,97,255,.4);
@@ -99,7 +93,6 @@ const GS = `
   }
   @media (max-width: 640px)                        { .rb { height: 180px; border-radius: 12px; } }
   @media (min-width: 641px) and (max-width: 900px) { .rb { height: 220px; } }
-
   .mq {
     margin-top: 10px; border-radius: 14px;
     border: 1px solid rgba(128,97,255,.4);
@@ -108,7 +101,6 @@ const GS = `
   }
   @media (max-width: 640px)                        { .mq { height: 110px; border-radius: 10px; } }
   @media (min-width: 641px) and (max-width: 900px) { .mq { height: 140px; } }
-
   @keyframes mql { from { transform: translateX(0); } to { transform: translateX(-50%); } }
   .mt {
     display: inline-flex; align-items: center;
@@ -131,17 +123,22 @@ const GS = `
   @media (max-width: 640px)                        { .mi { height: 78px; margin: 0 8px; } .ml { border-radius: 8px; } }
   @media (min-width: 641px) and (max-width: 900px) { .mi { height: 108px; margin: 0 11px; } }
 
-  /* ── Luma ──
-     Mobile height raised to 860px so the full Luma form + submit
-     button is always visible without internal scrolling.          */
+  /* ── Luma — no border, small radius, hidden scrollbar ── */
   .lo {
-    margin-top: 24px; border-radius: 16px;
-    border: 1px solid rgba(255,122,195,.35);
+    margin-top: 24px;
+    border-radius: 8px;
+    border: 1px solid rgba(128,97,255,.25);
     overflow: hidden;
   }
-  .li { display: block; width: 100%; height: 600px; border: none; }
-  @media (max-width: 640px)                        { .lo { border-radius: 12px; } .li { height: 1080px; } }
-  @media (min-width: 641px) and (max-width: 900px) { .li { height: 640px; } }
+  .luma-scroll {
+    height: 600px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .luma-scroll::-webkit-scrollbar { display: none; }
+  @media (max-width: 640px)                        { .luma-scroll { height: 580px; } }
+  @media (min-width: 641px) and (max-width: 900px) { .luma-scroll { height: 600px; } }
 
   .sc  { position: relative; overflow: hidden; cursor: pointer; }
   .sf  {
@@ -189,7 +186,6 @@ function LogoMark() {
 }
 
 /* ─── Hero Card Caption ──────────────────────────────────────────────────── */
-/* Dark near-black fog — no purple bloom */
 function HeroCardCaption({ text, small }: { text: string; small?: boolean }) {
   return (
     <>
@@ -217,17 +213,12 @@ function HeroMosaic() {
   const w      = useWindowWidth();
   const mobile = w < 640;
   const tablet = w >= 640 && w < 900;
-
   if (mobile) {
     return (
       <div className="hw">
         <div style={{ position: "relative", borderRadius: 16, overflow: "hidden", height: 230, lineHeight: 0 }}>
           <img src="/Skyline.webp" alt="Nex Event" style={fillImg} />
-          <div style={{
-            position: "absolute", inset: 0,
-            background: "linear-gradient(to top, rgba(16,6,36,0.82) 0%, rgba(16,6,36,0.28) 55%, transparent 100%)",
-            pointerEvents: "none",
-          }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(16,6,36,0.82) 0%, rgba(16,6,36,0.28) 55%, transparent 100%)", pointerEvents: "none" }} />
           <div style={{ position: "absolute", bottom: 16, left: 14, zIndex: 2 }}>
             <div style={{ fontFamily: FONT, fontSize: 12, fontWeight: 700, color: "#fff", letterSpacing: "-0.01em", lineHeight: 1.3, textShadow: "0 1px 12px rgba(128,97,255,0.8), 0 0 30px rgba(255,51,188,0.5)" }}>
               14th Floor, Minox Event Space — Riga, Latvia
@@ -252,7 +243,6 @@ function HeroMosaic() {
       </div>
     );
   }
-
   return (
     <div className="hw">
       <div style={{ position: "relative", borderRadius: tablet ? 16 : 20, overflow: "hidden", height: tablet ? 360 : 480, lineHeight: 0 }}>
@@ -298,18 +288,7 @@ function RecapVideo() {
   return (
     <>
       <video ref={videoRef} src="/Recap.mp4" autoPlay loop muted playsInline style={fillImg} />
-      <button
-        onClick={toggleSound}
-        title={muted ? "Unmute" : "Mute"}
-        style={{
-          position: "absolute", top: 10, right: 10, zIndex: 10,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          width: 32, height: 32, borderRadius: "50%",
-          border: "1px solid rgba(255,255,255,0.3)",
-          background: "rgba(26,10,46,0.52)", backdropFilter: "blur(6px)",
-          cursor: "pointer", padding: 0, outline: "none",
-        }}
-      >
+      <button onClick={toggleSound} title={muted ? "Unmute" : "Mute"} style={{ position: "absolute", top: 10, right: 10, zIndex: 10, display: "flex", alignItems: "center", justifyContent: "center", width: 32, height: 32, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.3)", background: "rgba(26,10,46,0.52)", backdropFilter: "blur(6px)", cursor: "pointer", padding: 0, outline: "none" }}>
         {muted ? (
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -436,13 +415,8 @@ function SpeakerModal({ speaker, onClose }: { speaker: Speaker; onClose: () => v
       <div onClick={(e) => e.stopPropagation()} style={{ position: "relative", width: "100%", maxWidth: 400, borderRadius: 20, overflow: "hidden", border: `1px solid ${C.vBorder}`, background: C.ink, boxShadow: "0 24px 64px rgba(128,97,255,0.3), 0 0 0 1px rgba(255,122,195,0.15)" }}>
         <div style={{ position: "relative", height: 280, lineHeight: 0, overflow: "hidden" }}>
           <img src={speaker.src} alt={speaker.name} style={{ ...fillImg, objectPosition: "top" }} />
-          {/* ── same dark fog as hero ── */}
           <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
-            <div style={{
-              position: "absolute", bottom: -40, left: -40, width: "100%", height: 200,
-              background: "radial-gradient(ellipse at 30% 85%, rgba(20,10,40,0.60) 0%, rgba(20,10,40,0.28) 42%, transparent 72%)",
-              filter: "blur(20px)",
-            }} />
+            <div style={{ position: "absolute", bottom: -40, left: -40, width: "100%", height: 200, background: "radial-gradient(ellipse at 30% 85%, rgba(20,10,40,0.60) 0%, rgba(20,10,40,0.28) 42%, transparent 72%)", filter: "blur(20px)" }} />
           </div>
           <div style={{ position: "absolute", bottom: 20, left: 20 }}>
             <div style={{ fontFamily: FONT, fontSize: 18, fontWeight: 700, color: "#fff", letterSpacing: "-0.01em", textShadow: "0 1px 12px rgba(128,97,255,0.9), 0 0 28px rgba(255,51,188,0.55)" }}>{speaker.name}</div>
@@ -521,20 +495,32 @@ function KeynoteSpeakers() {
         )}
         <div className="sg">
           {speakers.map((s, i) => (
-            <div key={i} className="sk" onClick={() => setActiveSpeaker(s)} style={{ position: "relative", borderRadius: 16, overflow: "hidden", height: cardH, background: "rgba(128,97,255,0.08)", border: `1px solid ${C.vBorder}` }}>
+            <div key={i} className="sk" onClick={() => setActiveSpeaker(s)}
+              style={{ position: "relative", borderRadius: 16, overflow: "hidden", height: cardH, background: "rgba(128,97,255,0.08)", border: `1px solid ${C.vBorder}` }}
+            >
               <img src={s.src} alt={s.name} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "top", display: "block" }} />
-              {/* ── same dark fog as hero ── */}
-              <div style={{
-                position: "absolute", bottom: -40, left: -40, width: "100%", height: 200,
-                background: "radial-gradient(ellipse at 30% 85%, rgba(20,10,40,0.60) 0%, rgba(20,10,40,0.28) 42%, transparent 72%)",
-                filter: "blur(20px)", pointerEvents: "none",
-              }} />
-              <div className="svh" style={{ position: "absolute", top: 12, right: 12, opacity: 0, transition: "opacity 0.22s ease", display: "flex", alignItems: "center", gap: 5, background: "rgba(26,10,46,0.58)", backdropFilter: "blur(6px)", border: "1px solid rgba(255,122,195,0.4)", borderRadius: 20, padding: "5px 11px" }}>
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={C.pink} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+              <div style={{ position: "absolute", bottom: -40, left: -40, width: "100%", height: 200, background: "radial-gradient(ellipse at 30% 85%, rgba(20,10,40,0.60) 0%, rgba(20,10,40,0.28) 42%, transparent 72%)", filter: "blur(20px)", pointerEvents: "none" }} />
+
+              {/* Eye icon — always visible on mobile, fades in on hover on desktop */}
+              <div
+                className="svh"
+                style={{
+                  position: "absolute", top: 12, right: 12,
+                  opacity: mobile ? 1 : 0,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  width: 36, height: 36,
+                  background: "rgba(16,6,36,0.52)",
+                  backdropFilter: "blur(8px)",
+                  border: "1px solid rgba(255,122,195,0.5)",
+                  borderRadius: "50%",
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={C.pink} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
                 </svg>
-                <span style={{ fontFamily: FONT, fontSize: 10, fontWeight: 600, color: C.pink, letterSpacing: "0.06em", textTransform: "uppercase" }}>View</span>
               </div>
+
               <div style={{ position: "absolute", bottom: mobile ? 13 : 20, left: mobile ? 12 : 18 }}>
                 <div style={{ fontFamily: FONT, fontSize: mobile ? 13 : 16, fontWeight: 700, color: "#ffffff", letterSpacing: "-0.01em", lineHeight: 1.2, textShadow: "0 1px 12px rgba(128,97,255,0.9), 0 0 28px rgba(255,51,188,0.55)" }}>{s.name}</div>
                 <div style={{ fontFamily: FONT, fontSize: mobile ? 10 : 12, fontWeight: 400, color: "rgba(255,255,255,0.8)", marginTop: 4, letterSpacing: "0.04em", textShadow: "0 1px 8px rgba(128,97,255,0.8)" }}>{s.role}</div>
@@ -573,21 +559,18 @@ function LumaForm() {
       <p style={{ fontFamily: FONT, marginTop: 10, marginBottom: 0, fontSize: 13, fontWeight: 500, color: C.magenta, letterSpacing: "0.04em", textAlign: "center" }}>
         Free for creators — no ticket, no fee, ever
       </p>
-      <div style={{ marginTop: 24, borderRadius: 16, border: `1px solid ${C.border}`, overflow: "hidden" }}>
-        <iframe
-          src="https://lu.ma/embed/event/evt-guA9zHzcVg5vgdw/simple"
-          scrolling="auto"
-          frameBorder="0"
-          allow="fullscreen; payment"
-          title="Apply to attend Creator Nexus"
-          style={{
-            display: "block",
-            border: "none",
-            width: "100%",
-            height: 600,
-            marginBottom: -4,
-          }}
-        />
+      {/* No border, small radius, scrollbar hidden */}
+      <div className="lo">
+        <div className="luma-scroll">
+          <iframe
+            src="https://lu.ma/embed/event/evt-guA9zHzcVg5vgdw/simple"
+            scrolling="no"
+            frameBorder="0"
+            allow="fullscreen; payment"
+            title="Apply to attend Creator Nexus"
+            style={{ display: "block", border: "none", width: "100%", height: 900 }}
+          />
+        </div>
       </div>
     </section>
   );
@@ -619,21 +602,11 @@ function Label({ text }: { text: string }) {
   );
 }
 
-/* PhotoCaption — dark near-black fog matching the hero cards */
 function PhotoCaption({ text }: { text: string }) {
   return (
     <>
-      <div style={{
-        position: "absolute", bottom: -20, left: -20, width: "120%", height: 120,
-        background: "radial-gradient(ellipse at 25% 80%, rgba(20,10,40,0.55) 0%, rgba(20,10,40,0.25) 42%, transparent 72%)",
-        filter: "blur(14px)", pointerEvents: "none",
-      }} />
-      <div style={{
-        position: "absolute", bottom: 12, left: 12,
-        fontFamily: FONT, fontSize: 11, fontWeight: 500,
-        color: "rgba(255,255,255,0.9)", letterSpacing: "0.05em",
-        textShadow: "0 1px 10px rgba(128,97,255,0.9), 0 0 20px rgba(255,51,188,0.5)",
-      }}>
+      <div style={{ position: "absolute", bottom: -20, left: -20, width: "120%", height: 120, background: "radial-gradient(ellipse at 25% 80%, rgba(20,10,40,0.55) 0%, rgba(20,10,40,0.25) 42%, transparent 72%)", filter: "blur(14px)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: 12, left: 12, fontFamily: FONT, fontSize: 11, fontWeight: 500, color: "rgba(255,255,255,0.9)", letterSpacing: "0.05em", textShadow: "0 1px 10px rgba(128,97,255,0.9), 0 0 20px rgba(255,51,188,0.5)" }}>
         {text}
       </div>
     </>
