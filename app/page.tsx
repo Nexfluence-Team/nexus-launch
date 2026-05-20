@@ -445,7 +445,7 @@ function SpeakerModal({ speaker, onClose }: { speaker: Speaker; onClose: () => v
 function KeynoteSpeakers() {
   const speakers: Speaker[] = [
     {
-      src: "/Speaker 1.webp",
+      src: "/Speaker.webp",
       name: "Cindy Bokāne",
       role: "@cindywanderlust · 31K Followers",
       instagram: "https://www.instagram.com/cindywanderlust",
