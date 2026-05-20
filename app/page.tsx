@@ -17,8 +17,8 @@ const C = {
   vBorder: "rgba(128,97,255,0.4)",
 } as const;
 /* ─── Instagram links — EDIT THESE TWO ──────────────────────────────────── */
-const IG_PROFILE_URL   = "https://www.instagram.com/YOUR_HANDLE";         // ← REPLACE
-const IG_COMMUNITY_URL = "https://www.instagram.com/YOUR_COMMUNITY_LINK"; // ← REPLACE
+const IG_PROFILE_URL   = "https://www.instagram.com/nexfluence.eu";         // ← REPLACE
+const IG_COMMUNITY_URL = "https://ig.me/j/AbanIlYdHEhj6sI1"; // ← REPLACE
 /* ─── Types ──────────────────────────────────────────────────────────────── */
 type Speaker = {
   src: string; name: string; role: string;
