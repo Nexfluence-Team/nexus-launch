@@ -4,7 +4,7 @@
  * Optimised for mobile (<640 px), tablet (640–900 px), desktop (>900 px)
  */
 import { useEffect, useRef, useState } from "react";
-/* ─── Tokens ─────────────────────────────────────────────────────────────── */
+/* --- Tokens --------------------------------------------------------------- */
 const FONT = "'Rubik', var(--font-rubik), sans-serif";
 const C = {
   ink:     "#f7f5ff",
@@ -16,15 +16,15 @@ const C = {
   border:  "rgba(255,122,195,0.35)",
   vBorder: "rgba(128,97,255,0.4)",
 } as const;
-/* ─── Instagram links — EDIT THESE TWO ──────────────────────────────────── */
-const IG_PROFILE_URL   = "https://www.instagram.com/nexfluence.eu";         // ← REPLACE
-const IG_COMMUNITY_URL = "https://ig.me/j/AbanIlYdHEhj6sI1"; // ← REPLACE
-/* ─── Types ──────────────────────────────────────────────────────────────── */
+/* --- Instagram links — EDIT THESE TWO ------------------------------------ */
+const IG_PROFILE_URL   = "https://www.instagram.com/nexfluence.eu";
+const IG_COMMUNITY_URL = "https://ig.me/j/AbanIlYdHEhj6sI1";
+/* --- Types ---------------------------------------------------------------- */
 type Speaker = {
   src: string; name: string; role: string;
   instagram: string; handle: string; bio: string;
 };
-/* ─── Hook ───────────────────────────────────────────────────────────────── */
+/* --- Hook ----------------------------------------------------------------- */
 function useWindowWidth() {
   const [w, setW] = useState(1200);
   useEffect(() => {
@@ -35,7 +35,7 @@ function useWindowWidth() {
   }, []);
   return w;
 }
-/* ─── Global CSS ─────────────────────────────────────────────────────────── */
+/* --- Global CSS ----------------------------------------------------------- */
 const GS = `
   *, *::before, *::after { box-sizing: border-box; }
   .ph  { max-width: calc(380px + 50vw); margin: 0 auto; padding: 28px 32px; }
@@ -143,7 +143,7 @@ const GS = `
     filter: blur(26px); opacity: .15; transition: opacity .45s ease; pointer-events: none;
   }
   .sc:hover .sf { opacity: 1; }
-  /* ── Social connect grid ── */
+  /* -- Social connect grid -- */
   .soc-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -153,7 +153,7 @@ const GS = `
   @media (max-width: 640px) {
     .soc-grid { grid-template-columns: 1fr; gap: 12px; }
   }
-  /* ── Social card hover lift ── */
+  /* -- Social card hover lift -- */
   .soc-card {
     transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
   }
@@ -162,11 +162,28 @@ const GS = `
     border-color: rgba(255,122,195,0.55) !important;
     box-shadow: 0 12px 40px rgba(128,97,255,0.22), 0 0 0 1px rgba(255,122,195,0.18);
   }
-  /* ── Social button hover ── */
+  /* -- Social button hover -- */
   .soc-btn { transition: opacity .18s ease, transform .18s ease; }
   .soc-btn:hover { opacity: 0.85; transform: scale(1.03); }
+  /* -- Hero CTA button -- */
+  .hero-cta-btn {
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .hero-cta-btn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(128,97,255,0.45), 0 2px 0 rgba(255,122,195,0.25) !important;
+  }
+  .hero-cta-btn:active { transform: scale(0.98); }
+  /* -- Value pills wrap on mobile -- */
+  .value-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+  }
 `;
-/* ─── Page ───────────────────────────────────────────────────────────────── */
+/* --- Page ----------------------------------------------------------------- */
 export default function Page() {
   return (
     <div style={{ background: C.ink, minHeight: "100vh", fontFamily: FONT }}>
@@ -174,6 +191,8 @@ export default function Page() {
       <header className="ph"><LogoMark /></header>
       <HeroMosaic />
       <main className="pm">
+        {/* ↓ NEW: clear value prop + CTA immediately after hero */}
+        <HeroCTA />
         <LastHappenings />
         <Sponsors />
         <KeynoteSpeakers />
@@ -185,23 +204,184 @@ export default function Page() {
     </div>
   );
 }
-/* ─── Logo ───────────────────────────────────────────────────────────────── */
+/* --- Logo ----------------------------------------------------------------- */
 function LogoMark() {
   return (
     <div style={{ display: "inline-flex", alignItems: "center", gap: 12 }}>
-      <img src="/Nex.webp" alt="Nex logo" className="logo-img" style={{ objectFit: "contain", display: "block" }} />
+      <img
+        src="/Nex.webp"
+        alt="Nex logo"
+        className="logo-img"
+        style={{ objectFit: "contain", display: "block" }}
+      />
       <div>
-        <div className="logo-name" style={{ fontFamily: FONT, fontWeight: 650, lineHeight: 1, letterSpacing: "-0.03em", color: C.white }}>
+        <div
+          className="logo-name"
+          style={{
+            fontFamily: FONT,
+            fontWeight: 650,
+            lineHeight: 1,
+            letterSpacing: "-0.03em",
+            color: C.white,
+          }}
+        >
           Creator Nexus
         </div>
-        <div className="logo-tag" style={{ fontFamily: FONT, fontWeight: 350, color: C.pink, marginTop: 3 }}>
+        <div
+          className="logo-tag"
+          style={{
+            fontFamily: FONT,
+            fontWeight: 400,
+            color: C.pink,
+            marginTop: 4,
+            fontSize: "15px",
+            lineHeight: 1.45,
+            letterSpacing: "0.01em",
+            maxWidth: "620px",
+          }}
+        >
           Bringing Impactful Creators Across the Baltics Under One Roof
         </div>
       </div>
     </div>
   );
 }
-/* ─── Hero Card Caption ──────────────────────────────────────────────────── */
+
+/* --- Value Pill ----------------------------------------------------------- */
+function ValuePill({ icon, text }: { icon: string; text: string }) {
+  return (
+    <div style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 7,
+      padding: "8px 16px",
+      borderRadius: 100,
+      border: "1px solid rgba(128,97,255,0.35)",
+      background: "rgba(128,97,255,0.07)",
+      fontFamily: FONT,
+      fontSize: 12,
+      fontWeight: 500,
+      color: C.white,
+      letterSpacing: "0.01em",
+      whiteSpace: "nowrap",
+    }}>
+      <span style={{ fontSize: 14 }}>{icon}</span>
+      <span>{text}</span>
+    </div>
+  );
+}
+
+/* --- Hero CTA (NEW) ------------------------------------------------------- */
+/**
+ * Sits immediately below the mosaic.
+ * Answers: Who is this for? What do I get? What should I do?
+ */
+function HeroCTA() {
+  const w      = useWindowWidth();
+  const mobile = w < 640;
+  const tablet = w >= 640 && w < 900;
+
+  function scrollToApply() {
+    document.getElementById("apply")?.scrollIntoView({ behavior: "smooth" });
+    window.gtag?.("event", "hero_cta_clicked", { event_category: "engagement", event_label: "scroll_to_signup" });
+  }
+
+  return (
+    <section style={{ marginTop: 32, textAlign: "center" }}>
+      {/* -- Event headline -- */}
+      <h1
+        style={{
+          fontFamily: FONT,
+          fontSize: mobile ? 28 : 40,
+          fontWeight: 900,
+          letterSpacing: "-0.035em",
+          lineHeight: 1.1,
+          color: C.white,
+          margin: 0,
+        }}
+      >
+        You're Invited
+      </h1>
+      <p
+        style={{
+          fontFamily: FONT,
+          fontSize: mobile ? 13 : 15,
+          fontWeight: 400,
+          color: C.dimText,
+          marginTop: 10,
+          lineHeight: 1.6,
+        }}
+      >
+        May 28 · 5:30 PM · 14th Floor, Minox Event Space
+      </p>
+
+      {/* -- Prose value proposition -- */}
+      <p
+        style={{
+          fontFamily: FONT,
+          fontSize: mobile ? 14 : 16,
+          fontWeight: 400,
+          color: C.white,
+          lineHeight: 1.85,
+          marginTop: 20,
+          maxWidth: mobile ? 340 : w < 900 ? 520 : 1040,
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        Free for creators who want to make a difference.
+        Drinks, food, and a great time are all on us.
+        Brands will be present and actively looking for creators to work with.
+        Come ready to network, get scouted, and leave with{" "}
+        <span style={{ fontWeight: 700, color: C.violet }}>
+          real paid collaboration opportunities.
+        </span>
+      </p>
+
+      {/* -- Primary CTA -- */}
+      <button
+        onClick={scrollToApply}
+        className="hero-cta-btn"
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          gap: 8,
+          marginTop: 28,
+          padding: mobile ? "15px 36px" : "17px 52px",
+          borderRadius: 14,
+          fontFamily: FONT,
+          fontSize: mobile ? 15 : 17,
+          fontWeight: 800,
+          letterSpacing: "-0.01em",
+          color: "#fff",
+          background: "linear-gradient(135deg, #ff33bc 0%, #8061ff 100%)",
+          border: "none",
+          cursor: "pointer",
+          boxShadow: "0 8px 36px rgba(128,97,255,0.38), 0 2px 0 rgba(255,122,195,0.2)",
+          outline: "none",
+        }}
+      >
+        Book My Spot
+      </button>
+
+      {/* -- Reassurance line -- */}
+      <p
+        style={{
+          fontFamily: FONT,
+          fontSize: 12,
+          fontWeight: 400,
+          color: C.dimText,
+          marginTop: 10,
+          letterSpacing: "0.01em",
+        }}
+      >
+        For creators only
+      </p>
+
+    </section>
+  );
+}
+/* --- Hero Card Caption ---------------------------------------------------- */
 function HeroCardCaption({ text, small }: { text: string; small?: boolean }) {
   return (
     <>
@@ -223,7 +403,7 @@ function HeroCardCaption({ text, small }: { text: string; small?: boolean }) {
     </>
   );
 }
-/* ─── Hero Mosaic ────────────────────────────────────────────────────────── */
+/* --- Hero Mosaic ---------------------------------------------------------- */
 function HeroMosaic() {
   const w      = useWindowWidth();
   const mobile = w < 640;
@@ -289,7 +469,7 @@ function HeroMosaic() {
     </div>
   );
 }
-/* ─── Recap Video ────────────────────────────────────────────────────────── */
+/* --- Recap Video ---------------------------------------------------------- */
 function RecapVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(true);
@@ -319,7 +499,7 @@ function RecapVideo() {
     </>
   );
 }
-/* ─── Last Happenings ────────────────────────────────────────────────────── */
+/* --- Last Happenings ------------------------------------------------------ */
 function LastHappenings() {
   const w       = useWindowWidth();
   const mobile  = w < 640;
@@ -379,7 +559,7 @@ function LastHappenings() {
     </section>
   );
 }
-/* ─── Sponsors ───────────────────────────────────────────────────────────── */
+/* --- Sponsors ------------------------------------------------------------- */
 function Sponsors() {
   return (
     <section style={{ marginTop: 64 }}>
@@ -395,7 +575,7 @@ function Sponsors() {
     </section>
   );
 }
-/* ─── Brand Marquee ──────────────────────────────────────────────────────── */
+/* --- Brand Marquee -------------------------------------------------------- */
 const MARQUEE_BRANDS = [
   { src: "/Artisan Street Bakery.webp", alt: "Artisan Street Bakery" },
   { src: "/Molberts.webp",             alt: "Molberts"              },
@@ -420,7 +600,7 @@ function BrandMarquee() {
     </div>
   );
 }
-/* ─── Speaker Modal ──────────────────────────────────────────────────────── */
+/* --- Speaker Modal -------------------------------------------------------- */
 function SpeakerModal({ speaker, onClose }: { speaker: Speaker; onClose: () => void }) {
   useEffect(() => {
     const fn = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -460,7 +640,7 @@ function SpeakerModal({ speaker, onClose }: { speaker: Speaker; onClose: () => v
     </div>
   );
 }
-/* ─── Keynote Speakers ───────────────────────────────────────────────────── */
+/* --- Keynote Speakers ----------------------------------------------------- */
 function KeynoteSpeakers() {
   const speakers: Speaker[] = [
     {
@@ -544,7 +724,7 @@ function KeynoteSpeakers() {
     </section>
   );
 }
-/* ─── Luma Form ──────────────────────────────────────────────────────────── */
+/* --- Luma Form ------------------------------------------------------------ */
 function LumaForm() {
   useEffect(() => {
     const el = document.getElementById("apply");
@@ -583,7 +763,7 @@ function LumaForm() {
     </section>
   );
 }
-/* ─── Instagram SVG icon (reusable) ─────────────────────────────────────── */
+/* --- Instagram SVG icon (reusable) --------------------------------------- */
 function IgIcon({ color, size = 22 }: { color: string; size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -593,7 +773,7 @@ function IgIcon({ color, size = 22 }: { color: string; size?: number }) {
     </svg>
   );
 }
-/* ─── Social Connect ─────────────────────────────────────────────────────── */
+/* --- Social Connect ------------------------------------------------------- */
 function SocialConnect() {
   const outerCard: React.CSSProperties = {
     position: "relative",
@@ -603,7 +783,6 @@ function SocialConnect() {
     background: "rgba(128,97,255,0.06)",
     padding: "28px 24px 24px",
   };
-
   const innerCard: React.CSSProperties = {
     position: "relative",
     display: "flex",
@@ -614,14 +793,13 @@ function SocialConnect() {
     padding: "8px 12px",
     flex: 1,
   };
-
   const btnBase: React.CSSProperties = {
     display: "inline-flex",
     alignItems: "center",
     gap: 7,
     marginTop: 6,
     padding: "10px 22px",
-    borderRadius: 10, // reduced radius
+    borderRadius: 10,
     fontFamily: FONT,
     fontSize: 13,
     fontWeight: 700,
@@ -629,15 +807,12 @@ function SocialConnect() {
     textDecoration: "none",
     cursor: "pointer",
   };
-
   return (
     <section style={{ marginTop: 64 }}>
       <Label text="Stay Connected" />
-
       <h2 className="st" style={sectionTitle}>
         Join the Community
       </h2>
-
       <p
         style={{
           fontFamily: FONT,
@@ -652,7 +827,6 @@ function SocialConnect() {
       >
         Follow us for Event Updates and Enter our Exclusive Creator Circle.
       </p>
-
       <div style={{ ...outerCard, marginTop: 24 }}>
         <div
           style={{
@@ -665,7 +839,6 @@ function SocialConnect() {
           {/* LEFT BLOCK */}
           <div style={innerCard}>
             <IgIcon color={C.magenta} size={32} />
-
             <div
               style={{
                 fontFamily: FONT,
@@ -678,7 +851,6 @@ function SocialConnect() {
             >
               Follow Us
             </div>
-
             <div
               style={{
                 fontFamily: FONT,
@@ -692,7 +864,6 @@ function SocialConnect() {
               Stay up to date with event announcements, speaker reveals, and
               behind-the-scenes content.
             </div>
-
             <a
               href={IG_PROFILE_URL}
               target="_blank"
@@ -710,7 +881,6 @@ function SocialConnect() {
               Follow on Instagram
             </a>
           </div>
-
           {/* RIGHT BLOCK */}
           <div style={innerCard}>
             <svg
@@ -728,7 +898,6 @@ function SocialConnect() {
               <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
               <path d="M16 3.13a4 4 0 0 1 0 7.75" />
             </svg>
-
             <div
               style={{
                 fontFamily: FONT,
@@ -741,7 +910,6 @@ function SocialConnect() {
             >
               Creator Community
             </div>
-
             <div
               style={{
                 fontFamily: FONT,
@@ -755,7 +923,6 @@ function SocialConnect() {
               A private space for Baltic creators — network, share
               opportunities, and grow together between events.
             </div>
-
             <a
               href={IG_COMMUNITY_URL}
               target="_blank"
@@ -777,7 +944,7 @@ function SocialConnect() {
     </section>
   );
 }
-/* ─── About ──────────────────────────────────────────────────────────────── */
+/* --- About ---------------------------------------------------------------- */
 function AboutNex() {
   return (
     <section style={{ marginTop: 64 }}>
@@ -793,7 +960,7 @@ function AboutNex() {
     </section>
   );
 }
-/* ─── Shared helpers ─────────────────────────────────────────────────────── */
+/* --- Shared helpers ------------------------------------------------------- */
 function Label({ text }: { text: string }) {
   return (
     <div style={{ fontFamily: FONT, textAlign: "center", fontSize: 13, fontWeight: 700, color: C.violet, opacity: 0.9, marginBottom: 2 }}>
@@ -811,7 +978,7 @@ function PhotoCaption({ text }: { text: string }) {
     </>
   );
 }
-/* ─── Style constants ────────────────────────────────────────────────────── */
+/* --- Style constants ------------------------------------------------------ */
 const sectionTitle: React.CSSProperties = {
   fontFamily: FONT, fontWeight: 900, letterSpacing: "-0.03em",
   lineHeight: 1.1, color: "#1a0a2e", marginTop: 8, textAlign: "center",
@@ -824,7 +991,7 @@ const fillImg: React.CSSProperties = {
   position: "absolute", inset: 0, width: "100%", height: "100%",
   objectFit: "cover", display: "block",
 };
-/* ─── Window type augment ────────────────────────────────────────────────── */
+/* --- Window type augment -------------------------------------------------- */
 declare global {
   interface Window { gtag?: (...args: unknown[]) => void; }
 }
