@@ -134,8 +134,8 @@ const GS = `
     -ms-overflow-style: none;
   }
   .luma-scroll::-webkit-scrollbar { display: none; }
-  @media (max-width: 640px)                        { .luma-scroll { height: 1160px; } }
-  @media (min-width: 641px) and (max-width: 900px) { .luma-scroll { height: 1200px; } }
+  @media (max-width: 640px)                        { .luma-scroll { height: 800px; } }
+  @media (min-width: 641px) and (max-width: 900px) { .luma-scroll { height: 800px; } }
   .sc  { position: relative; overflow: hidden; cursor: pointer; }
   .sf  {
     position: absolute; inset: 0;
