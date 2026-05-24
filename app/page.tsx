@@ -134,8 +134,8 @@ const GS = `
     -ms-overflow-style: none;
   }
   .luma-scroll::-webkit-scrollbar { display: none; }
-  @media (max-width: 640px)                        { .luma-scroll { height: 580px; } }
-  @media (min-width: 641px) and (max-width: 900px) { .luma-scroll { height: 600px; } }
+  @media (max-width: 640px)                        { .luma-scroll { height: 1160px; } }
+  @media (min-width: 641px) and (max-width: 900px) { .luma-scroll { height: 1200px; } }
   .sc  { position: relative; overflow: hidden; cursor: pointer; }
   .sf  {
     position: absolute; inset: 0;
@@ -872,7 +872,7 @@ function LumaForm() {
             frameBorder="0"
             allow="fullscreen; payment"
             title="Apply to attend Creator Nexus"
-            style={{ display: "block", border: "none", width: "100%", height: 900 }}
+            style={{ display: "block", border: "none", width: "100%", height: 1800 }}
           />
         </div>
       </div>
