@@ -193,6 +193,7 @@ export default function Page() {
       <main className="pm">
         {/* ↓ NEW: clear value prop + CTA immediately after hero */}
         <HeroCTA />
+        <AlreadyJoining />
         <LastHappenings />
         <Sponsors />
         <KeynoteSpeakers />
@@ -381,6 +382,119 @@ function HeroCTA() {
     </section>
   );
 }
+
+/* --- Already Joining ------------------------------------------------------ */
+/**
+ * Confirmed attendees / brands — shown right after the HeroCTA.
+ * Logos match the exact size, border-radius, gap and filter of BrandMarquee (.mi/.ml)
+ * but are static (no animation). No card wrapper.
+ */
+const JOINING_LOGOS = [
+  { src: "/Europe.webp",  alt: "European Commission" },
+  { src: "/Lima.webp",    alt: "LIMA"                },
+  { src: "/Skriveru.webp", alt: "Skrīveru"           },
+  { src: "/Hedonya.webp", alt: "Hedonya"             },
+];
+
+function AlreadyJoining() {
+  const w      = useWindowWidth();
+  const mobile = w < 640;
+  const tablet = w >= 640 && w < 900;
+
+  /* --- exact .mi / .ml values from BrandMarquee --- */
+  const imgH   = mobile ? 78  : tablet ? 108 : 140;   // matches .mi height breakpoints
+  const radius = mobile ? 8   : 14;                    // matches .ml border-radius breakpoints
+  const gap    = mobile ? 16  : tablet ? 22  : 30;     // matches .mi margin: 0 15px → gap 30px
+
+  return (
+    <section style={{ marginTop: 40, textAlign: "center" }}>
+      {/* ---- label ---- */}
+      <div
+        style={{
+          fontFamily: FONT,
+          fontSize: 13,
+          fontWeight: 700,
+          color: C.violet,
+          opacity: 0.9,
+        }}
+      >
+        The Guest List
+      </div>
+
+      {/* ---- heading ---- */}
+      <h2
+        style={{
+          fontFamily: FONT,
+          fontSize: mobile ? 22 : 28,
+          fontWeight: 900,
+          letterSpacing: "-0.03em",
+          lineHeight: 1.1,
+          color: C.white,
+          margin: "6px 0 0",
+        }}
+      >
+        Who's in the Room
+      </h2>
+
+      {/* ---- body copy — same max-width as HeroCTA prose ---- */}
+      <p
+        style={{
+          fontFamily: FONT,
+          fontSize: mobile ? 14 : 16,
+          fontWeight: 400,
+          color: C.dimText,
+          lineHeight: 1.85,
+          marginTop: 12,
+          marginBottom: 0,
+          maxWidth: mobile ? 340 : w < 900 ? 520 : 1040,
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        The evening brings together influencers, brands, investors,{" "}
+        <span style={{ fontWeight: 600, color: C.white }}>LIMA board members</span>
+        , and people connected with the{" "}
+        <span style={{ fontWeight: 600, color: C.white }}>European Commission</span>
+        {" "}— making this one of the strongest networking rooms in the Baltics this year.
+        Welcome drinks by{" "}
+        <span style={{ fontWeight: 600, color: C.violet }}>Hedonya</span>
+        , and gift baskets by{" "}
+        <span style={{ fontWeight: 700, color: C.violet }}>Skrīveru</span>
+        {" "}are on us.
+      </p>
+
+      {/* ---- logos — no card, static, exact .mi/.ml sizing ---- */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          alignItems: "center",
+          justifyContent: "center",
+          gap,
+          marginTop: 20,
+        }}
+      >
+        {JOINING_LOGOS.map(({ src, alt }) => (
+          <img
+            key={src}
+            src={src}
+            alt={alt}
+            style={{
+              height: imgH,
+              width: "auto",
+              objectFit: "cover",
+              borderRadius: radius,
+              opacity: 0.96,
+              filter: "drop-shadow(0 0 18px rgba(128,97,255,.18)) drop-shadow(0 0 28px rgba(255,51,188,.12))",
+              display: "block",
+            }}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* --- Hero Card Caption ---------------------------------------------------- */
 function HeroCardCaption({ text, small }: { text: string; small?: boolean }) {
   return (
