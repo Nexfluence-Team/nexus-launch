@@ -699,6 +699,7 @@ const MARQUEE_BRANDS = [
   { src: "/Skriveru.webp",       alt: "Skriveru"        },
   { src: "/Hedonya.webp",       alt: "Hedonya"        },
   { src: "/Very.webp",       alt: "Very Berry"        },
+  { src: "/RedBull.webp",       alt: "Red Bull"        },
 
 ];
 function BrandMarquee() {
