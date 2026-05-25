@@ -684,7 +684,7 @@ function Sponsors() {
       <h2 className="st" style={sectionTitle}>Our Friends in Baltics</h2>
       <div className="rb">
         <img
-          src={mobile ? "/Kinetics-mobile.webp" : "/Kinetics.webp"}
+          src={mobile ? "/Kinetics-phone.webp" : "/Kinetics.webp"}
           alt="Kinetics"
           style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
