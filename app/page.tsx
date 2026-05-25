@@ -675,12 +675,19 @@ function LastHappenings() {
 }
 /* --- Sponsors ------------------------------------------------------------- */
 function Sponsors() {
+  const w = useWindowWidth();
+  const mobile = w < 640;
+
   return (
     <section style={{ marginTop: 64 }}>
       <Label text="Partners" />
       <h2 className="st" style={sectionTitle}>Our Friends in Baltics</h2>
       <div className="rb">
-        <img src="/Kinetics.webp" alt="Red Bull" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+        <img
+          src={mobile ? "/Kinetics-mobile.webp" : "/Kinetics.webp"}
+          alt="Kinetics"
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
       </div>
       <BrandMarquee />
       <p style={{ fontFamily: FONT, marginTop: 16, fontSize: 12, fontWeight: 400, color: "rgba(26,10,46,0.4)", letterSpacing: "0.06em", textAlign: "center" }}>
