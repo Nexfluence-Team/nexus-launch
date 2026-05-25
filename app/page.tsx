@@ -189,10 +189,10 @@ export default function Page() {
     <div style={{ background: C.ink, minHeight: "100vh", fontFamily: FONT }}>
       <style>{GS}</style>
       <header className="ph"><LogoMark /></header>
+        <HeroCTA />
       <HeroMosaic />
       <main className="pm">
         {/* ↓ NEW: clear value prop + CTA immediately after hero */}
-        <HeroCTA />
         <AlreadyJoining />
         <LastHappenings />
         <Sponsors />
