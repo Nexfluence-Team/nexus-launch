@@ -698,6 +698,7 @@ const MARQUEE_BRANDS = [
   { src: "/Street Burgers.webp",       alt: "Street Burgers"        },
   { src: "/Skriveru.webp",       alt: "Skriveru"        },
   { src: "/Hedonya.webp",       alt: "Hedonya"        },
+  { src: "/Very.webp",       alt: "Very Berry"        },
 
 ];
 function BrandMarquee() {
